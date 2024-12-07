@@ -1,7 +1,7 @@
 
 
 ---
-# Email-to-Telegram Bot
+# Email to Telegram News Bot
 
 Telegram-бот, который автоматически получает новостные рассылки от Хабр и Proglib AI через email, обрабатывает их и пересылает в настроенные Telegram-чаты по заданному расписанию
 
