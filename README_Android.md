@@ -147,8 +147,7 @@ python main.py
 
 <details>
 <summary>Скриншот Настроек Контроля активности</summary>
-
-![Настройка Termux 1](./screenshots/termux_settings1.jpg)
+<img src="./screenshots/termux_settings1.jpg" alt="Настройка Termux 1" width=40%>
 </details>
 
 Так же в шторке уведомлений Android там где висит `Termux` нужно нажать `Acquire wakelock`, переключив таким образом `Termux` в режим в котором он не будет отключаться    
@@ -156,8 +155,7 @@ python main.py
 
 <details>
 <summary>Скриншот Acquire wakelock Termux</summary>
-
-![Настройка Termux 2](./screenshots/termux_settings2.jpg)
+<img src="./screenshots/termux_settings2.jpg" alt="Настройка Termux 2" width=40%>
 </details>
 
 
