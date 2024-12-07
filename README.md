@@ -1,4 +1,4 @@
-https://github.com/sergey21000/telegram-news-bot
+
 
 ---
 # Email-to-Telegram Bot
