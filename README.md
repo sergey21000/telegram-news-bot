@@ -141,17 +141,23 @@ https://proglib.academy/ai-newsletter
 
 **1) Создание и активация виртуального окружения (опционально)**
 
-*Linux*
-```
-python3 -m venv env
-source env/bin/activate
-```
+- *Linux*
+  ```
+  python3 -m venv env
+  source env/bin/activate
+  ```
 
-*Windows*
-```
-python -m venv env
-env\Scripts\activate
-```
+- *Windows CMD*
+  ```
+  python -m venv env
+  env\Scripts\activate
+  ```
+
+- *Windows PowerShell*
+  ```
+  python -m venv env
+  env\Scripts\activate.ps1
+  ```
 
 **3) Установка зависимостей**  
 
@@ -161,15 +167,15 @@ pip install -r requirements.txt
 
 **4) Запуск бота**  
 
-*Linux*
-```
-python3 main.py
-```
+- *Linux*
+  ```
+  python3 main.py
+  ```
 
-*Windows*
-```
-python main.py
-```
+- *Windows*
+  ```
+  python main.py
+  ```
 
 Запуск валидации необходимого функционала перед запуском бота (опционально)
 ```
