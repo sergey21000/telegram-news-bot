@@ -78,15 +78,15 @@ pkg update
 pkg install libjpeg-turbo
 ```
 
-Установка `Pillow` на 64 битных ОС
-```
-LDFLAGS="-L/system/lib64/" CFLAGS="-I/data/data/com.termux/files/usr/include/" pip install Pillow==10.4.0
-```
+- Установка `Pillow` на 64 битных ОС
+  ```
+  LDFLAGS="-L/system/lib64/" CFLAGS="-I/data/data/com.termux/files/usr/include/" pip install Pillow==10.4.0
+  ```
 
-Установка `Pillow` на 32 битных ОС
-```
-LDFLAGS="-L/system/lib/" CFLAGS="-I/data/data/com.termux/files/usr/include/" pip install Pillow==10.4.0
-```
+- Установка `Pillow` на 32 битных ОС
+  ```
+  LDFLAGS="-L/system/lib/" CFLAGS="-I/data/data/com.termux/files/usr/include/" pip install Pillow==10.4.0
+  ```
 
 Узнать архитектуру можно командой
 ```
@@ -191,13 +191,13 @@ ssh-keygen
 
 **3) Вывести содержимое публичного ключа `id_rsa.pub` на ПК**
  - Windows
-```
+  ```
 cat %USERPROFILE%\.ssh\id_rsa.pub
-```
+  ```
  - Linux
-```
-cat ~/.ssh/id_rsa.pub
-```
+  ```
+  cat ~/.ssh/id_rsa.pub
+  ```
 
 **4) Скопировать содержимое ключа и любым удобным способом перекинуть на телефон (например через Избранное Telegram)**  
 Затем в телефоне скопировать содержимое и вставить его в файл `~/.ssh/authorized_keys` в телефоне  
