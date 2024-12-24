@@ -8,6 +8,7 @@ class ChatConfig:
     '''Конфиг чата'''
     chat_id: int
 
+
 @dataclass
 class AdminChatConfig:
     '''Конфиг чата админа'''
