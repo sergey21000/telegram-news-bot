@@ -109,6 +109,7 @@ https://habr.com/ru/feed/settings/
 Подписаться на рассылку от Proglib AI можно здесь
 https://proglib.academy/ai-newsletter
 
+<!--- comment -->
 > [!IMPORTANT]  
 На данный момент рассылка от Proglib AI прекращена, данный шаг можно считать неактуальным
 
