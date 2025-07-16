@@ -135,7 +135,7 @@ pip install -r requirements.txt
 ```
 
 > [!NOTE]  
-> Если при сборке `pydantic-core` выдает ошибку `failed to download from `https://index.crates.io/config.json`` - включить VPN
+> Если при сборке `pydantic-core` выдает ошибку `failed to download from https://index.crates.io/config.json` - включить VPN
 
 **3) Запуск бота**
 
