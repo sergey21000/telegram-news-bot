@@ -49,7 +49,7 @@ python -V
 ```
 На момент декабря 2024г устанавливается версия 3.12.7
 
-Установить другие часто используемые библиотеки (`rust` необходим для установки `aiogram` на `Termux`)
+Установить другие часто используемые библиотеки (`rust` необходим для установки `aiogram` на `Termux`, т.к нужен для сборки `pydantic-core` через `maturin`)
 ```
 pkg install -y wget nano git openssh rust
 ```
@@ -115,6 +115,8 @@ pango-view --version
 weasyprint --info
 ```
 
+> [!NOTE]  
+> Если при сборке `pydantic-core` выдает ошибку `failed to download from `https://index.crates.io/config.json`` - включить VPN
 
 ---
 ## Запуск бота на Android
@@ -133,6 +135,8 @@ source env/bin/activate
 pip install -U pip
 pip install -r requirements.txt
 ```
+
+
 
 **3) Запуск бота**
 
