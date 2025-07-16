@@ -125,7 +125,7 @@ weasyprint --info
 ```
 cd /sdcard
 mkdir -P info_bot
-git clone https://github.com/sergey21000/telegram-email-news-bot.git
+git clone https://github.com/sergey21000/telegram-news-bot.git
 
 python -m venv env
 source env/bin/activate
