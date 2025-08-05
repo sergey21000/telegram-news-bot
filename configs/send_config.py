@@ -1,3 +1,5 @@
+import os
+
 from configs.chats_settings import (
     TIMEZONE,
     ADMIN_CHAT,
@@ -62,14 +64,14 @@ class Config(BaseConfig):
         admin_chat=ADMIN_CHAT,
         chats=[CHATS_TO_SEND.ML_2025_CHAT],
         parse_func=EmailParser.get_reminder_send,
-        reminder_link='https://my.mts-link.ru/j/innopolisooc/ml-2025',
+        reminder_link=os.getenv('ML_2025_REMINDER_LINK'),
         reminder_time='19:00',
         is_active=True,
     )
 
     ml_2025_2_reminder_config = SendReminderConfig(
         schedule_kwargs_config=ScheduleKwargsConfig(
-            day_of_week='tue,fri',
+            day_of_week='tue,fri',  # (mon,tue,wed,thu,fri,sat,sun)
             hour=10,
             minute=00,
             end_date='2026-04-10',
@@ -78,8 +80,7 @@ class Config(BaseConfig):
         admin_chat=ADMIN_CHAT,
         chats=[CHATS_TO_SEND.ML_2025_2_CHAT],
         parse_func=EmailParser.get_reminder_send,
-        reminder_link='https://my.mts-link.ru/j/innopolisooc/ml-2025-2',
+        reminder_link=os.getenv('ML_2025_2_REMINDER_LINK'),
         reminder_time='18:00',
         is_active=False,
     )
-
