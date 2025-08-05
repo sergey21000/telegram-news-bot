@@ -6,6 +6,7 @@ import datetime
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
+import click
 
 import bot.setup_logging
 from configs.send_config import Config
@@ -40,14 +41,15 @@ async def send_from_configs(
         send_configs: list[SendBaseConfig],
         bot: Bot,
         disable_notification: bool,
+        skip_not_current_day: bool,
         ) -> None:
     '''Получение и отправка рассылок из конфигов'''
     for send_config in send_configs:
         if not send_config.is_active:
             continue
-        is_current_day = is_current_day_in_schedule(send_config.schedule_kwargs_config.day_of_week)
-        if isinstance(send_config, SendReminderConfig) and not is_current_day:
-            continue
+        if skip_not_current_day:
+            if not is_current_day_in_schedule(send_config.schedule_kwargs_config.day_of_week):
+                continue
         try:
             parse_result = await send_config.parse_func(send_config)
         except Exception as ex:
@@ -65,12 +67,25 @@ async def send_from_configs(
                     logger.error(f'Ошибка при отправке рассылки в чат {chat}: {ex}')
 
 
-async def main():
+async def async_main(email: bool, reminder: bool):
+    """Запуск рассылок ботом"""
     try:
         logger.info('Старт получения и отправки рассылки')
-        await send_from_configs(config.get_email_configs(), bot, disable_notification=True)
-        await asyncio.sleep(5)
-        await send_from_configs(config.get_reminder_configs(), bot, disable_notification=False)
+        if email:
+            await send_from_configs(
+                send_configs=config.get_email_configs(),
+                bot=bot,
+                disable_notification=True,
+                skip_not_current_day=False,
+            )
+            await asyncio.sleep(5)
+        if reminder:
+            await send_from_configs(
+                send_configs=config.get_reminder_configs(),
+                bot=bot,
+                disable_notification=False,
+                skip_not_current_day=True,
+                )
     except Exception as ex:
         logger.error(f'Ошибка при получении и отпраки рассылки: {ex}')
     finally:
@@ -78,5 +93,18 @@ async def main():
         logger.info('Бот завершил работу')
 
 
+@click.command()
+@click.option('--all', 'send_all', is_flag=True, default=True, help='Отправить все рассылки (по умолчанию)')
+@click.option('--email', is_flag=True, help='Отправить только email-рассылки')
+@click.option('--reminder', is_flag=True, help='Отправить только напоминания')
+def cli(send_all: bool, email: bool, reminder: bool):
+    """Запуск рассылок ботом"""
+    if email or reminder:
+        send_all = False
+    if send_all:
+        email, reminder = True, True
+    asyncio.run(async_main(email, reminder))
+
+
 if __name__ == '__main__':
-    asyncio.run(main())
+    cli()
