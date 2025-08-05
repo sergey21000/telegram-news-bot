@@ -79,6 +79,7 @@ class Config(BaseConfig):
         chats=[CHATS_TO_SEND.ML_2025_2_CHAT],
         parse_func=EmailParser.get_reminder_send,
         reminder_link='https://my.mts-link.ru/j/innopolisooc/ml-2025-2',
-        reminder_time='19:00',
+        reminder_time='18:00',
         is_active=False,
     )
+
