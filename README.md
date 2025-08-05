@@ -196,7 +196,14 @@ python -m configs.validation
 
 Отдельно запустить скрипт рассылки
 ```
+# все рассылки из конфига Config
 python run_send.py
+
+# только рассылки, полученные из электронной почты (конфиги класса SendEmailConfig)
+python run_send.py --email
+
+# только рассылки напоминаний (конфиги класса SendReminderConfig)
+python run_send.py --reminder
 ```
 
 **5) Дополнительная установка WeasyPrint (опционально)**
@@ -287,7 +294,14 @@ python run_bot.py
 
 Или отдельно запустить скрипт рассылки
 ```
+# все рассылки из конфига Config
 python run_send.py
+
+# только рассылки, полученные из электронной почты (конфиги класса SendEmailConfig)
+python run_send.py --email
+
+# только рассылки напоминаний (конфиги класса SendReminderConfig)
+python run_send.py --reminder
 ```
 
 При текущих настройках рассылка новостей от Хабр приходит каждый день в 12:30  
