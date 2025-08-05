@@ -1,100 +1,193 @@
-import pytz
-from pytz.tzinfo import BaseTzInfo
-from dataclasses import dataclass, field
-from typing import Any
-
-from configs.chats_settings import ADMIN_CHAT, CHATS_TO_SEND, TIMEZONE
+from configs.chats_settings import (
+    TIMEZONE,
+    ADMIN_CHAT,
+    CHATS_TO_SEND,
+)
 from configs.config_classes import (
-    ChatConfig,
-    AdminChatConfig,
     ScheduleKwargsConfig,
-    ScheduleBaseConfig,
-    ScheduleReminderConfig,
-    ScheduleEmailConfig,
+    SendBaseConfig,
+    SendReminderConfig,
+    SendEmailConfig,
 )
 from bot.parser import EmailParser
 
 
 class BaseConfig:
     '''Базовый конфиг для конфига с рассылками'''
-    timezone: pytz.tzinfo.BaseTzInfo = TIMEZONE
-    admin_chat: ChatConfig = field(default_factory=lambda: ADMIN_CHAT, init=False)
-    bot: Any = field(default=None, init=False)
-    scheduler: Any = field(default=None, init=False)
+    @classmethod
+    def get_reminder_configs(cls) -> list[SendReminderConfig]:
+        return [value for key, value in cls.__dict__.items() if key.endswith('_reminder_config')]
 
-    def __setattr__(self, key: str, value: Any) -> None:
-        super().__setattr__(key, value)
-        if key in ('bot',):
-            for config in self.get_all_configs():
-                setattr(config, key, value)
+    @classmethod
+    def get_email_configs(cls) -> list[SendEmailConfig]:
+        return [value for key, value in cls.__dict__.items() if key.endswith('_email_config')]
 
-    def get_reminder_configs(self) -> list[ScheduleReminderConfig]:
-        return [value for key, value in self.__dict__.items() if key.endswith('_reminder_config')]
-
-    def get_email_configs(self) -> list[ScheduleEmailConfig]:
-        return [value for key, value in self.__dict__.items() if key.endswith('_email_config')]
-
-    def get_all_configs(self)-> list[ScheduleBaseConfig]:
-        return self.get_reminder_configs() + self.get_email_configs()
+    @classmethod
+    def get_all_configs(cls) -> list[SendBaseConfig]:
+        return cls.get_email_configs() + cls.get_reminder_configs()
 
 
 # ================= КОНФИГИ РАССЫЛКИ ============================
 
-@dataclass
+# class Config(BaseConfig):
+#     '''Конфиг с конфигами для рассылок'''
+
+#     # ================= КОНФИГИ РАССЫЛКИ ИЗ ПОЧТЫ ==========================
+
+#     habr_email_config = SendEmailConfig(
+#         schedule_kwargs_config=ScheduleKwargsConfig(
+#             day_of_week='*',
+#             hour=12,
+#             minute=30,
+#             timezone=TIMEZONE,
+#         ),
+#         admin_chat=ADMIN_CHAT,
+#         chats=[CHATS_TO_SEND.ML_2025_2_CHAT],
+#         parse_func=EmailParser.get_habr_send,
+#         mail_folder='INBOX/News',
+#         target_email_sender='Habr',
+#         is_active=True,
+#     )
+
+#     # ================= КОНФИГИ НАПОМИНАНИЙ ========================
+
+#     ml_2025_reminder_config = SendReminderConfig(
+#         schedule_kwargs_config=ScheduleKwargsConfig(
+#             day_of_week='wed,thu',
+#             hour=10,
+#             minute=00,
+#             end_date='2025-12-25',
+#             timezone=TIMEZONE,
+#         ),
+#         admin_chat=ADMIN_CHAT,
+#         chats=[CHATS_TO_SEND.ML_2025_CHAT],
+#         parse_func=EmailParser.get_reminder_send,
+#         reminder_link='https://my.mts-link.ru/j/innopolisooc/ml-2025',
+#         reminder_time='19:00',
+#         is_active=True,
+#     )
+
+#     ml_2025_2_reminder_config = SendReminderConfig(
+#         schedule_kwargs_config=ScheduleKwargsConfig(
+#             day_of_week='tue,fri',
+#             hour=10,
+#             minute=00,
+#             end_date='2026-04-10',
+#             timezone=TIMEZONE,
+#         ),
+#         admin_chat=ADMIN_CHAT,
+#         chats=[CHATS_TO_SEND.ML_2025_2_CHAT],
+#         parse_func=EmailParser.get_reminder_send,
+#         reminder_link='https://my.mts-link.ru/j/innopolisooc/ml-2025-2',
+#         reminder_time='19:00',
+#         is_active=False,
+#     )
+
+
+
+
+
+
+
+
 class Config(BaseConfig):
     '''Конфиг с конфигами для рассылок'''
 
     # ================= КОНФИГИ РАССЫЛКИ ИЗ ПОЧТЫ ==========================
 
-    proglib_email_config: ScheduleEmailConfig = field(default_factory=lambda: ScheduleEmailConfig(
-        schedule_config=ScheduleKwargsConfig(
-            day_of_week='sat',
-            hour=12,
-            minute=30,
-            timezone=TIMEZONE,
-        ),
-        admin_chat=ADMIN_CHAT,
-        chats=CHATS_TO_SEND,
-        parse_func=EmailParser.get_proglib_send,
-        mail_folder='INBOX/proglib',
-        target_email_sender='Proglib AI',
-        )
-    )
-
-    habr_email_config: ScheduleEmailConfig = field(default_factory=lambda: ScheduleEmailConfig(
-        schedule_config=ScheduleKwargsConfig(
+    habr_email_config = SendEmailConfig(
+        schedule_kwargs_config=ScheduleKwargsConfig(
             day_of_week='*',
-            hour=12,
-            minute=30,
+            hour=1,
+            minute=5,
             timezone=TIMEZONE,
         ),
         admin_chat=ADMIN_CHAT,
-        chats=CHATS_TO_SEND,
+        chats=[ADMIN_CHAT],
         parse_func=EmailParser.get_habr_send,
         mail_folder='INBOX/News',
         target_email_sender='Habr',
-        )
+        is_active=True,
     )
 
     # ================= КОНФИГИ НАПОМИНАНИЙ ========================
 
-    # test_reminder_config: ScheduleReminderConfig = field(default_factory=lambda: ScheduleReminderConfig(
-    #     schedule_config=ScheduleKwargsConfig(
+    ml_2025_reminder_config = SendReminderConfig(
+        schedule_kwargs_config=ScheduleKwargsConfig(
+            day_of_week='tue,thu',
+            hour=1,
+            minute=8,
+            end_date='2025-12-25',
+            timezone=TIMEZONE,
+        ),
+        admin_chat=ADMIN_CHAT,
+        chats=[ADMIN_CHAT],
+        parse_func=EmailParser.get_reminder_send,
+        reminder_link='https://my.mts-link.ru/j/innopolisooc/ml-2025',
+        reminder_time='19:00',
+        is_active=True,
+    )
+
+    ml_2025_2_reminder_config = SendReminderConfig(
+        schedule_kwargs_config=ScheduleKwargsConfig(
+            day_of_week='tue,fri',
+            hour=1,
+            minute=5,
+            end_date='2026-04-10',
+            timezone=TIMEZONE,
+        ),
+        admin_chat=ADMIN_CHAT,
+        chats=[ADMIN_CHAT],
+        parse_func=EmailParser.get_reminder_send,
+        reminder_link='https://my.mts-link.ru/j/innopolisooc/ml-2025-2',
+        reminder_time='19:00',
+        is_active=False,
+    )
+
+
+
+
+
+# ========================= EXAMPLE ===========================
+
+# @dataclass
+# class Config(BaseConfig):
+#     '''Конфиг с конфигами для рассылок'''
+
+    # ================= КОНФИГИ РАССЫЛКИ ИЗ ПОЧТЫ ==========================
+
+    # proglib_email_config = ScheduleEmailConfig(
+        # schedule_kwargs_config=ScheduleKwargsConfig(
+            # day_of_week='sat',
+            # hour=17,
+            # minute=28,
+            # timezone=TIMEZONE,
+        # ),
+        # admin_chat=ADMIN_CHAT,
+        # chats=CHATS_TO_SEND,
+        # parse_func=EmailParser.get_proglib_send,
+        # mail_folder='INBOX/proglib',
+        # target_email_sender='Proglib AI',
+    # )
+
+    # ================= КОНФИГИ НАПОМИНАНИЙ ========================
+
+    # test_reminder_config = SendReminderConfig(
+    #     schedule_kwargs_config=ScheduleKwargsConfig(
     #         day_of_week='*',  # дни рассылки (mon,tue,wed,thu,fri,sat,sun)
     #         hour=10,  # часы рассылки
     #         minute=00,  # минуты рассылки
-    #         end_date='2025-02-01',  # дата окончания рассылки
+    #         end_date='2025-02-01',  # дата окончания рассылки (год-месяц-день)
     #         timezone=TIMEZONE,  # часовой пояс
     #     ),
     #     admin_chat=ADMIN_CHAT,  # чат админа для отправки отчетов об ошибках
     #     chats=CHATS_TO_SEND,  # чаты для рассылки
         
     #     # функция получения сообщения для рассылки
-    #     # принимает текущий экземпляр конфига ScheduleReminderConfig
+    #     # принимает текущий экземпляр конфига SendReminderConfig
     #     parse_func=EmailParser.get_reminder_send,
         
     #     # доп аргументы, присущие конкретному конфигу
     #     reminder_link='https://my.mts-link.ru/j/innopolisooc/webinar_link1',
     #     reminder_time='19:00',
-    #     )
     # )

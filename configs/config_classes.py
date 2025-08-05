@@ -1,4 +1,4 @@
-from typing import Any, Callable
+from typing import Callable
 from dataclasses import dataclass, field
 from pytz.tzinfo import BaseTzInfo
 
@@ -7,6 +7,7 @@ from pytz.tzinfo import BaseTzInfo
 class ChatConfig:
     '''Конфиг чата'''
     chat_id: int
+    chat_name: str | None = None
 
 
 @dataclass
@@ -30,17 +31,21 @@ class ScheduleKwargsConfig:
 
 
 @dataclass
-class ScheduleBaseConfig:
+class SendBaseConfig:
     '''Базовый конфиг для рассылки'''
-    schedule_config: ScheduleKwargsConfig
-    admin_chat: ChatConfig
+    schedule_kwargs_config: ScheduleKwargsConfig
+    admin_chat: AdminChatConfig
     chats: list[ChatConfig]
-    parse_func: Callable[['ScheduleBaseConfig'], str | tuple[str, str]]
-    bot: Any = field(default=None, init=False)
+    parse_func: Callable[['SendBaseConfig'], str | tuple[str, str]]
+    is_active: bool
 
-        
+    def __post_init__(self):
+        if isinstance(self.chats, ChatConfig):
+            self.chats = [self.chats]
+
+
 @dataclass
-class ScheduleEmailConfig(ScheduleBaseConfig):
+class SendEmailConfig(SendBaseConfig):
     '''Конфиг для рассылки сообщений из электронной почты'''
     mail_folder: str
     target_email_sender: str
@@ -48,7 +53,7 @@ class ScheduleEmailConfig(ScheduleBaseConfig):
 
 
 @dataclass
-class ScheduleReminderConfig(ScheduleBaseConfig):
+class SendReminderConfig(SendBaseConfig):
     '''Конфиг для рассылки напоминаний'''
     reminder_link: str
     reminder_time: str

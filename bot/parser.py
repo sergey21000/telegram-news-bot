@@ -21,7 +21,7 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 load_dotenv()
 
-from configs.config_classes import ScheduleReminderConfig, ScheduleEmailConfig
+from configs.config_classes import SendReminderConfig, SendEmailConfig
 from configs.chats_settings import SendSettingsConfig
 
 if SendSettingsConfig.send_pdf_to_proglib:
@@ -30,6 +30,7 @@ if SendSettingsConfig.send_pdf_to_proglib:
 
 
 logger = logging.getLogger(__name__)
+
 
 @dataclass
 class Message:
@@ -46,7 +47,7 @@ class EmailParser:
     # ========================= COMMON UTILS ===============================
 
     @classmethod
-    async def get_last_email_message(cls, email_config: ScheduleEmailConfig) -> Message:
+    async def get_last_email_message(cls, email_config: SendEmailConfig) -> Message:
         '''Получение последнего письма из папки почты email_config.mail_folder'''
         imap_client = aioimaplib.IMAP4_SSL(host='imap.mail.ru')
         await imap_client.wait_hello_from_server()
@@ -70,7 +71,6 @@ class EmailParser:
 
             email_num = email_numbers.pop(-1).decode('utf-8')
             res, msg = await imap_client.fetch(email_num, '(RFC822)')
-
             email_body = msg[1]
             email_message = email.message_from_bytes(email_body)
             email_sender = cls.get_email_sender(email_message)
@@ -79,25 +79,24 @@ class EmailParser:
             else:
                 continue
 
-        email_datetime = cls.get_email_datetime(email_message, email_config.schedule_config.timezone)
+        email_datetime = cls.get_email_datetime(email_message, email_config.schedule_kwargs_config.timezone)
         message = Message(
             email_message=email_message,
             email_sender=email_sender,
             email_num=email_num,
             email_datetime=email_datetime,
             )
-
         await imap_client.logout()
         return message
 
 
     @classmethod
-    async def get_available_email_message(cls, email_config: ScheduleEmailConfig) -> Message:
+    async def get_available_email_message(cls, email_config: SendEmailConfig) -> Message:
         '''Получение письма с отправителем email_config.target_email_sender, которое еще не было отправлено'''
         message = await cls.get_last_email_message(email_config)
         if message.email_num in email_config.email_numbers:
             raise Exception(f'Письмо под номером {message.email_num} от отправителя {email_config.target_email_sender} уже есть в БД')
-        current_datetime = datetime.now(email_config.schedule_config.timezone)
+        current_datetime = datetime.now(email_config.schedule_kwargs_config.timezone)
         if message.email_datetime.date() < current_datetime.date():
             raise Exception(f'Письмо от отправителя {email_config.target_email_sender} '
                             f'раньше сегодняшней даты ({message.email_datetime.date()} < {current_datetime.date()})')
@@ -153,7 +152,6 @@ class EmailParser:
             raise Exception('Не удалось получить URL ссылку из письма')
         web_link = web_link['href']
         return web_link
-        
 
     # ======================== HABR UTILS ==================================
 
@@ -179,7 +177,7 @@ class EmailParser:
     # ========================= GENERAL UTILS ======================
 
     @classmethod
-    async def get_proglib_send(cls, email_config: ScheduleEmailConfig) -> tuple[str, str]:
+    async def get_proglib_send(cls, email_config: SendEmailConfig) -> tuple[str, str]:
         '''Получение и формирование рассылки новостей из письма от Proglib (PDF и ссылка на сайт с новостью)'''
         message = await cls.get_available_email_message(email_config)
         html_content = cls.get_content_from_email_message(message.email_message, to_html=True)
@@ -196,7 +194,7 @@ class EmailParser:
 
 
     @classmethod
-    async def get_habr_send(cls, email_config: ScheduleEmailConfig) -> str:
+    async def get_habr_send(cls, email_config: SendEmailConfig) -> str:
         '''Получение и формирование рассылки новостей из письма от Хабр'''
         message = await cls.get_available_email_message(email_config)
         message_to_send = await cls.get_text_from_habr_message(message)
@@ -204,17 +202,15 @@ class EmailParser:
 
 
     @staticmethod
-    async def get_reminder_send(reminder_config: ScheduleReminderConfig) -> str:
+    async def get_reminder_send(reminder_config: SendReminderConfig) -> str:
         '''Извлечение атрибута message_to_send из конфига для отправки напоминаний'''
         return reminder_config.message_to_send
 
 
 # ================= HTML TO PDF ====================================
 
-
 class UrlToPdf:
     '''Преобразование Web-страницы в PDF'''
-    
     @staticmethod
     async def html_from_url(web_link: str) -> str:
         '''Получает HTML-контент по URL'''
@@ -253,19 +249,16 @@ class UrlToPdf:
             msg = f'Не удалось получить HTML из URL {web_link}\nКод ошибки:\n{ex}'
             logger.error(msg, exc_info=True)
             return None
-
         try:
             cleaned_html = cls.clean_html(html_content)
         except Exception as ex:
             msg = f'Не удалось очистить HTML содержимое из ссылки {web_link}\nКод ошибки:\n{ex}'
             logger.warning(msg, exc_info=True)
             cleaned_html = html_content
-
         try:
             await asyncio.to_thread(cls.html_to_pdf, cleaned_html, pdf_file_name, css)
         except Exception as ex:
             msg = f'Не удалось преобразовать HTML в PDF из URL {web_link}\nКод ошибки:\n{ex}'
             logger.error(msg, exc_info=True)
             return None
-        
         return pdf_file_name

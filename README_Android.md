@@ -135,12 +135,12 @@ pip install -r requirements.txt
 ```
 
 > [!NOTE]  
-> Если при сборке `pydantic-core` выдает ошибку `failed to download from https://index.crates.io/config.json` - включить VPN
+> Если при сборке `pydantic-core` выдает ошибку `failed to download from https://index.crates.io/config.json` - включить VPN 
 
 **3) Запуск бота**
 
 ```
-python main.py
+python run_bot.py
 ```
 
 **4) Настроить Android чтобы он не закрывал `Termux` (опционально, для случая если бот будет деплоиться на телефоне)**

@@ -3,6 +3,7 @@ import logging
 import importlib
 from pathlib import Path
 from collections.abc import Callable, Coroutine, Awaitable
+from types import SimpleNamespace
 
 from dotenv import load_dotenv
 
@@ -76,7 +77,11 @@ def validate_mail_credentials() -> None:
 def validate_chats() -> None:
     '''Проверка на пустой список с чатами для отправки рассылок'''
     msg = 'Не передано ни одного ID чата в переменную CHATS_IDS_TO_SEND в файле configs.py'
-    if len(CHATS_TO_SEND) == 0:
+    if isinstance(CHATS_TO_SEND, SimpleNamespace):
+        num_chats = len(vars(CHATS_TO_SEND))
+    else:
+        num_chats = len(CHATS_TO_SEND)
+    if num_chats == 0:
         logger.warning(msg)
 
 
