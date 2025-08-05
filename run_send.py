@@ -30,6 +30,8 @@ async def send_from_configs(
         ) -> None:
     '''Получение и отправка рассылок из конфигов'''
     for send_config in send_configs:
+        if not send_config.is_active:
+            continue
         try:
             parse_result = await send_config.parse_func(send_config)
         except Exception as ex:
@@ -62,4 +64,5 @@ async def main():
 
 
 if __name__ == '__main__':
+
     asyncio.run(main())
