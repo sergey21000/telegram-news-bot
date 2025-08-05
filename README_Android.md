@@ -25,32 +25,32 @@
 
 **2) Выполнить команду чтобы дать доступ `Termux` к памяти телефона**
 
-```
+```sh
 termux-setup-storage
 ```
 Дать необходимые разрешения если спросит
 
 Проверить что `Termux` имеет доступ к памяти телефона
-```
+```sh
 ls /sdcard
 ```
 
 **3) Обновить репозиторий и установить python**
 
-```
+```sh
 pkg update && pkg upgrade -y
 pkg install -y python python-pip
 pip install -U pip
 ```
 
 Проверить что python установлен
-```
+```sh
 python -V
 ```
 На момент декабря 2024г устанавливается версия 3.12.7
 
 Установить другие часто используемые библиотеки (`rust` необходим для установки `aiogram` на `Termux`, т.к нужен для сборки `pydantic-core` через `maturin`)
-```
+```sh
 pkg install -y wget nano git openssh rust
 ```
 
@@ -67,29 +67,29 @@ pkg install -y wget nano git openssh rust
 **1) Установка `Pillow` в `Termux` (требуется версия `Pillow<11,>=9.1.0')**  
 
 Проверить устанавливается ли `Pillow` обычным способом
-```
+```sh
 pip install Pillow==10.4.0
 ```
 Если ошибок нет, то перейти в шагу 2, если ошибка, то воспользоваться нижеописанным способом (взято из [stackoverflow](https://stackoverflow.com/a/63105934/14132503))
 
 Подготовка к установке `Pillow` 
-```
+```sh
 pkg update
 pkg install libjpeg-turbo
 ```
 
 - Установка `Pillow` на 64 битных ОС
-  ```
+  ```sh
   LDFLAGS="-L/system/lib64/" CFLAGS="-I/data/data/com.termux/files/usr/include/" pip install Pillow==10.4.0
   ```
 
 - Установка `Pillow` на 32 битных ОС
-  ```
+  ```sh
   LDFLAGS="-L/system/lib/" CFLAGS="-I/data/data/com.termux/files/usr/include/" pip install Pillow==10.4.0
   ```
 
 Узнать архитектуру можно командой
-```
+```sh
 uname -m
 ```
 Если показывает `aarch64`/`x86_64` то это 64 бит, если `armv7l`/`armv8l`/`i686`/`x86` то 32 бит  
@@ -98,18 +98,18 @@ uname -m
 
 **2)Установка Pango в `Termux`**
 
-```
+```sh
 pkg install pango
 ```
 
 **3) Установка WeasyPrint в `Termux`**
 
-```
+```sh
 pip install weasyprint==63.0
 ```
 
 Проверка установок `Pillow`, `Pango` и `Termux`
-```
+```sh
 pip list
 pango-view --version
 weasyprint --info
@@ -122,7 +122,7 @@ weasyprint --info
 **1) Клонирование репозитория и установка зависимостей**
 
 Переход в стандартную папку памяти телефона, создание папки `/info_bot`, клонирование репозитория, создание вирутального окружения (опционально) и установка зависимостей
-```
+```sh
 cd /sdcard
 mkdir -P info_bot
 git clone https://github.com/sergey21000/telegram-news-bot.git
@@ -139,7 +139,7 @@ pip install -r requirements.txt
 
 **3) Запуск бота**
 
-```
+```sh
 python run_bot.py
 ```
 
@@ -178,12 +178,12 @@ python run_bot.py
 IP адрес телефона может динамически меняться при новых подключениях  
 
 **1) Установка SSH и редактора nano на `Termux`**
-```
+```sh
 pkg install nano openssh
 ```
 
 **2) Генерация SSH ключей на ПК**
-```
+```sh
 ssh-keygen
 ```
 Далее нажимать `Enter` пока не будет написано что ключи сгенерированы  
@@ -195,47 +195,47 @@ ssh-keygen
 **3) Вывести содержимое публичного ключа `id_rsa.pub` на ПК**
 
 Команда для Windows PowerShell или Linux
-```
+```sh
 cat ~/.ssh/id_rsa.pub
 ```
 
 **4) Скопировать содержимое ключа и любым удобным способом перекинуть на телефон (например через Избранное Telegram)**  
 Затем в телефоне скопировать содержимое и вставить его в файл `~/.ssh/authorized_keys` в телефоне  
 Для этого в терминале `Termux` открываем редактор nano
-```
+```sh
 mkdir -p ~/.ssh
 nano ~/.ssh/authorized_keys
 ```
 Удерживаем тап по экрану - вставляем содержимое, и с помощью клавиатуры `Termux` нажимаем `Ctrl+S` и `Ctrl+X`
 
 **5) Остановка и запуск службы SSH в `Termux`**
-```
+```sh
 pkill sshd
 sshd
 ```
 
 **6) Узнать IP адрес телефона Android**
-```
+```sh
 ifconfig
 ```
 IP адрес написан в разделе `wlan0`, после слова `inet`, например `192.168.43.45`  
 Название может быть другое, например `wlan1` и тд  
 Можно сразу посмотреть инфо о `wlan0` командой
-```
+```sh
 ifconfig wlan0
 ```
 
 **7) Подключение из ПК с телефону - к IP адресу который узнали командой выше**
-```
+```sh
 ssh 192.168.43.45 -p 8022
 ```
 Перед подключением убедиться что служба SSH в `Termux` запущена (нужно запускать ее при каждом перезапуске `Termux`)
-```
+```sh
 sshd
 ```
 
 **8) Отключить авторизацию по паролю в `Termux` чтобы можно было подключаться только через SSH (опционально)**  
-```
+```sh
 nano $PREFIX/etc/ssh/sshd_config
 ```
 Добавить или редактировать строку
@@ -246,11 +246,11 @@ PasswordAuthentication no
 *Дополнительные команды*  
 
 Отключиться от телефона
-```
+```sh
 exit
 ```
 Завершить работу службы SSH в `Termux`
-```
+```sh
 pkill sshd
 ```
 
