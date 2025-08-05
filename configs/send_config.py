@@ -42,7 +42,7 @@ class Config(BaseConfig):
             timezone=TIMEZONE,
         ),
         admin_chat=ADMIN_CHAT,
-        chats=[ADMIN_CHAT],
+        chats=[CHATS_TO_SEND.ML_2025_CHAT],
         parse_func=EmailParser.get_habr_send,
         mail_folder='INBOX/News',
         target_email_sender='Habr',
@@ -60,7 +60,7 @@ class Config(BaseConfig):
             timezone=TIMEZONE,
         ),
         admin_chat=ADMIN_CHAT,
-        chats=[ADMIN_CHAT],
+        chats=[CHATS_TO_SEND.ML_2025_CHAT],
         parse_func=EmailParser.get_reminder_send,
         reminder_link='https://my.mts-link.ru/j/innopolisooc/ml-2025',
         reminder_time='19:00',
@@ -82,4 +82,3 @@ class Config(BaseConfig):
         reminder_time='19:00',
         is_active=False,
     )
-
