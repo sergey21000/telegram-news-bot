@@ -73,7 +73,7 @@ cd telegram-news-bot
 **2) Регистрация бота, получение пароля почты**  
 
 Создать файл `.env`
-```ini
+```env
 BOT_TOKEN=your_bot_token
 MAIL_ADDRESS=your_mail_adress@mail.ru
 MAIL_PASSWORD=your_mail_password
@@ -421,4 +421,5 @@ class Config(BaseConfig):
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
+
 
