@@ -21,6 +21,9 @@ jobs:
           cache: 'pip'
           cache-dependency-path: 'requirements.txt'
 
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
       - name: Run the bot
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
