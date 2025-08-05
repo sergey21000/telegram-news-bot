@@ -65,7 +65,7 @@ Telegram-бот, который автоматически получает но
 ## ⚙ Подготовка к запуску
 
 **1) Клонирование репозитория**  
-```
+```sh
 git clone https://github.com/sergey21000/telegram-news-bot.git
 cd telegram-news-bot
 ```
@@ -73,7 +73,7 @@ cd telegram-news-bot
 **2) Регистрация бота, получение пароля почты**  
 
 Создать файл `.env`
-```
+```ini
 BOT_TOKEN=your_bot_token
 MAIL_ADDRESS=your_mail_adress@mail.ru
 MAIL_PASSWORD=your_mail_password
@@ -149,43 +149,43 @@ https://proglib.academy/ai-newsletter~
 **1) Создание и активация виртуального окружения (опционально)**
 
 - *Linux*
-  ```
+  ```sh
   python3 -m venv env
   source env/bin/activate
   ```
 
 - *Windows CMD*
-  ```
+  ```sh
   python -m venv env
   env\Scripts\activate
   ```
 
 - *Windows PowerShell*
-  ```
+  ```powershell
   python -m venv env
   env\Scripts\activate.ps1
   ```
 
 **3) Установка зависимостей**  
 
-```
+```sh
 pip install -r requirements.txt
 ```
 
 **4) Запуск бота**  
 
 - *Linux*
-  ```
+  ```sh
   python3 run_bot.py
   ```
 
 - *Windows*
-  ```
+  ```sh
   python run_bot.py
   ```
 
 Запуск валидации необходимого функционала перед запуском бота (опционально)
-```
+```sh
 python -m configs.validation
 ```
 
@@ -195,7 +195,7 @@ python -m configs.validation
 ```
 
 Отдельно запустить скрипт рассылки
-```
+```sh
 # все рассылки из конфига Config
 python run_send.py
 
@@ -222,12 +222,12 @@ python run_send.py --reminder
 [Документация](https://www.msys2.org/#installation) по установке MSYS2  
 
 2. Установить `Pango`
-```
+```sh
 pacman -S mingw-w64-x86_64-pango
 ```
 
 3. Установить `WeasyPrint`
-```
+```sh
 pip install weasyprint==63.0
 ```
 
@@ -236,7 +236,7 @@ pip install weasyprint==63.0
 На Ubuntu `Pango` устанавливается автоматически вместе с `WeasyPrint`, если на других Linux это не так то нужно установить `Pango` для своей системы по инструкции  
 
 1. Установить `WeasyPrint`
-```
+```sh
 pip install weasyprint==63.0
 ```
 
@@ -288,7 +288,7 @@ CHATS_TO_SEND: dict[str, ChatConfig] = dict(
 Список чатов можно пополнять другими ID, главное что если это группа то бот должен быть в ней админом, а если это ID чата личной переписки, то человек должен первый написать боту
 
 Далее можно запускать бота и ожидать рассылки
-```
+```sh
 python run_bot.py
 ```
 
@@ -327,7 +327,7 @@ python run_send.py --reminder
 При текущих настройках рассылка новостей от Хабр приходит каждый день в 12:30  
 Рассылка от Proglib AI приходит каждую субботу в 12:30
 ```python
-schedule_config=ScheduleKwargsConfig(
+schedule_config = ScheduleKwargsConfig(
 	day_of_week='*',  # дни рассылки (mon,tue,wed,thu,fri,sat,sun)
 	hour=12,  # часы рассылки
 	minute=30,  # минуты рассылки
