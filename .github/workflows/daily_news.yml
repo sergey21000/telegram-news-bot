@@ -2,7 +2,7 @@ name: Daily News Bot
 
 on:
   schedule:
-    - cron: '45 9 * * *'
+    - cron: '0 10 * * *'
   workflow_dispatch:
 
 permissions:
