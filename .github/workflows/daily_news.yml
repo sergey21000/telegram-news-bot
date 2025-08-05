@@ -1,0 +1,35 @@
+name: Daily News Bot
+
+on:
+  schedule:
+    - cron: '30 9 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  send-news:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python with caching
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run the bot
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          MAIL_ADDRESS: ${{ secrets.MAIL_ADDRESS }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+        run: python run_send.py
