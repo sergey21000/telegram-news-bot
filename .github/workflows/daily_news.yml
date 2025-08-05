@@ -1,4 +1,4 @@
-name: Daily News Bot
+name: Daily News
 
 on:
   schedule:
@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   send-news:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 5
 
     steps:
@@ -27,11 +27,11 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run the bot
+      - name: Run emails
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           MAIL_ADDRESS: ${{ secrets.MAIL_ADDRESS }}
           MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
           ML_2025_REMINDER_LINK: ${{ vars.ML_2025_REMINDER_LINK }}
           ML_2025_2_REMINDER_LINK: ${{ vars.ML_2025_2_REMINDER_LINK }}
-        run: python run_send.py
+        run: python run_send.py --email
