@@ -5,6 +5,9 @@ on:
     - cron: '30 12 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   send-news:
     runs-on: ubuntu-22.04
