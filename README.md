@@ -268,8 +268,8 @@ ADMIN_CHAT: AdminChatConfig = AdminChatConfig(chat_id=123456789)
 Для того чтобы бот присылал рассылку в лс, передать созданный выше `ADMIN_CHAT` в список `chats` при инициализации конфига рассылки
 ```python
 habr_email_config = SendEmailConfig(
-	chats=[ADMIN_CHAT],
-	# остальные параметры
+    chats=[ADMIN_CHAT],
+    # остальные параметры
 ```
 
 2. Настройка для рассылки в группу/группы
@@ -281,7 +281,7 @@ habr_email_config = SendEmailConfig(
 # формат: 
 CHATS_TO_SEND: dict[str, ChatConfig] = dict(
     CHAT_NAME=ChatConfig(chat_id=123456789),
-	...,
+    ...,
 )
 ```
 
@@ -421,5 +421,6 @@ class Config(BaseConfig):
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
+
 
 
