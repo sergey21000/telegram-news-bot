@@ -9,7 +9,7 @@ from aiogram.enums import ParseMode
 
 import bot.setup_logging
 from configs.send_config import Config
-from configs.config_classes import SendBaseConfig
+from configs.config_classes import SendBaseConfig, SendReminderConfig
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -45,7 +45,8 @@ async def send_from_configs(
     for send_config in send_configs:
         if not send_config.is_active:
             continue
-        if not is_current_day_in_schedule(send_config.schedule_kwargs_config.day_of_week):
+        is_current_day = is_current_day_in_schedule(send_config.schedule_kwargs_config.day_of_week)
+        if isinstance(send_config, SendReminderConfig) and not is_current_day:
             continue
         try:
             parse_result = await send_config.parse_func(send_config)
