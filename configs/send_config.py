@@ -82,5 +82,6 @@ class Config(BaseConfig):
         parse_func=EmailParser.get_reminder_send,
         reminder_link=os.getenv('ML_2025_2_REMINDER_LINK'),
         reminder_time='18:00',
-        is_active=False,
+        is_active=True,
     )
+
