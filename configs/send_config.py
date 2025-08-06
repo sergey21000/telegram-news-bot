@@ -10,26 +10,10 @@ from configs.config_classes import (
     SendBaseConfig,
     SendReminderConfig,
     SendEmailConfig,
+    BaseConfig,
 )
 from bot.parser import EmailParser
 
-
-class BaseConfig:
-    '''Базовый конфиг для конфига с рассылками'''
-    @classmethod
-    def get_reminder_configs(cls) -> list[SendReminderConfig]:
-        return [value for key, value in cls.__dict__.items() if key.endswith('_reminder_config')]
-
-    @classmethod
-    def get_email_configs(cls) -> list[SendEmailConfig]:
-        return [value for key, value in cls.__dict__.items() if key.endswith('_email_config')]
-
-    @classmethod
-    def get_all_configs(cls) -> list[SendBaseConfig]:
-        return cls.get_email_configs() + cls.get_reminder_configs()
-
-
-# ================= КОНФИГИ РАССЫЛКИ ============================
 
 class Config(BaseConfig):
     '''Конфиг с конфигами для рассылок'''
@@ -84,4 +68,3 @@ class Config(BaseConfig):
         reminder_time='18:00',
         is_active=True,
     )
-
