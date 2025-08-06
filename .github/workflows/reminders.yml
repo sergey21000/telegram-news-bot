@@ -30,4 +30,6 @@ jobs:
       - name: Run reminders
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          ML_2025_REMINDER_LINK: ${{ vars.ML_2025_REMINDER_LINK }}
+          ML_2025_2_REMINDER_LINK: ${{ vars.ML_2025_2_REMINDER_LINK }}
         run: python run_send.py --reminder
