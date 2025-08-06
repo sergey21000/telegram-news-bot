@@ -6,7 +6,7 @@ from types import SimpleNamespace
 import pytz
 from pytz.tzinfo import BaseTzInfo
 
-from configs.config_classes import ChatConfig, AdminChatConfig
+from configs.base import ChatConfig, AdminChatConfig
 
 
 # часовой пояс

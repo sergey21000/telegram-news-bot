@@ -21,7 +21,7 @@ from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 load_dotenv()
 
-from configs.config_classes import SendReminderConfig, SendEmailConfig
+from configs.base import SendReminderConfig, SendEmailConfig
 from configs.chats_settings import SendSettingsConfig
 
 if SendSettingsConfig.send_pdf_to_proglib:

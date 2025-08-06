@@ -9,8 +9,7 @@ from aiogram.enums import ParseMode
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 import bot.setup_logging
-
-from configs.validation import validate_all
+from bot.validation import validate_all
 from configs.send_config import Config
 from configs.chats_settings import TIMEZONE
 
@@ -28,7 +27,6 @@ bot = Bot(
     default=DefaultBotProperties(parse_mode=ParseMode.HTML),
 )
 dp = Dispatcher()
-
 router.message.middleware(BotMiddleware(bot))
 dp.include_router(router)
 

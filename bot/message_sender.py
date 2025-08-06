@@ -8,7 +8,7 @@ from aiogram.types import FSInputFile
 from aiogram.enums import ParseMode
 from aiogram import Bot
 
-from configs.config_classes import SendBaseConfig
+from configs.base import SendBaseConfig
 from configs.chats_settings import SendSettingsConfig
 
 

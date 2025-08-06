@@ -10,7 +10,7 @@ import click
 
 import bot.setup_logging
 from configs.send_config import Config
-from configs.config_classes import SendBaseConfig, SendReminderConfig
+from configs.base import SendBaseConfig
 
 from dotenv import load_dotenv
 load_dotenv()

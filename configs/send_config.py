@@ -5,9 +5,8 @@ from configs.chats_settings import (
     ADMIN_CHAT,
     CHATS_TO_SEND,
 )
-from configs.config_classes import (
+from configs.base import (
     ScheduleKwargsConfig,
-    SendBaseConfig,
     SendReminderConfig,
     SendEmailConfig,
     BaseConfig,
