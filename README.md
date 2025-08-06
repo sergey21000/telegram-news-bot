@@ -269,7 +269,7 @@ ADMIN_CHAT: AdminChatConfig = AdminChatConfig(chat_id=123456789)
 ```python
 habr_email_config = SendEmailConfig(
     chats=[ADMIN_CHAT],
-    # остальные параметры
+	# остальные параметры
 ```
 
 2. Настройка для рассылки в группу/группы
@@ -356,56 +356,55 @@ class SendSettingsConfig:
 
 Отключить логирование ошибок в файл можно редактировав строку `LOG_TO_FILE = False` в файле `bot/setup_logging.py`
 
-**2) Пример создания своего конфига**
+**2) Пример добавления своего конфига для напоминаний**
 
 Пример создания своего простого конфига со своим текстом рассылки, который отправляет сообщение каждый понедельник и четверг в 12:00  
 
 1. Создать конфиг в файле `config/config_classes.py` и отнаследовать его от класса `SendBaseConfig`, например
-
 ```python
 @dataclass
 class MyReminderConfig(SendBaseConfig):
-    '''Конфиг расписания для планировщика задач AsyncIOScheduler'''
+    '''Конфиг для отправки напоминаний'''
     message_to_send: str
 ```
 
 2. Добавить импорт в файле `configs/send_config.py`
-
 ```python
 from configs.config_classes import MyReminderConfig
 ```
 
 3. Инициализировать новый конфиг в классе `Config` в файле `configs/send_config.py`  
 Название конфига должно заканчиваться на `_reminder_config`
-
 ```python
 class Config(BaseConfig):
     '''Конфиг с конфигами для рассылок'''
-	# ....
-    my_reminder_config = ScheduleReminderConfig(
+	# ================= ПРИМЕР КОНФИГА ДЛЯ НАПОМИНАНИЙ ===================
+    my_reminder_config = MyReminderConfig(
         schedule_kwargs_config=ScheduleKwargsConfig(
-            day_of_week='*',  # дни рассылки (mon,tue,wed,thu,fri,sat,sun)
+            day_of_week='mon,thu',  # дни рассылки (mon,tue,wed,thu,fri,sat,sun)
             hour=12,  # часы рассылки
             minute=00,  # минуты рассылки
-            end_date='2025-02-01',  # дата окончания рассылки
+            end_date='2026-02-01',  # дата окончания рассылки
             timezone=TIMEZONE,  # часовой пояс
         ),
         admin_chat=ADMIN_CHAT,  # чат админа для отправки отчетов об ошибках
-        chats=[CHATS_TO_SEND.MY_CHAT_1, CHATS_TO_SEND.MY_CHAT_2],  # чаты для рассылки
+        chats=[CHATS_TO_SEND.MY_CHAT_1, MY_CHAT_2],  # чаты для рассылки
         
         # функция получения сообщения для рассылки
-        # принимает текущий экземпляр конфига ScheduleReminderConfig
+        # принимает текущий экземпляр конфига MyReminderConfig
+		# может быть любой самописной функцией, лямбда для упрощенного примера
         parse_func=EmailParser.get_reminder_send,
 		
         # доп аргументы, присущие конкретному конфигу
-        message_to_send = 'Здесь сообщение-напоминание для отправки по расписанию'
-        )
+        message_to_send='Здесь сообщение-напоминание для отправки по расписанию'
+    )
 ```
 
-Функция, которая передается в параметр `parse_func=` может быть любой, при этом она должна быть асинхронной и принимать на вход экземпляр текущего конфига, и возвращать итоговый текст для отправки  
-В данном примере функция `parse_func=EmailParser.get_reminder_send` просто извлекает из текущего конфига атрибут `test_reminder_config.message_to_send` в котором содержится текст сообщения для рассылки и возвращает его
+Функция, которая передается в параметр `parse_func=` может быть любой, при этом она должна быть асинхронной, принимать на вход экземпляр текущего конфига и возвращать итоговый текст для отправки  
+В данном примере функция `parse_func=EmailParser.get_reminder_send` просто извлекает из текущего конфига атрибут `message_to_send` в котором содержится текст сообщения для рассылки и возвращает его
 
-Все конфиги по умолчанию производят отправку в чаты, определенные в словаре `CHATS_TO_SEND` в файле `configs/chats_settings.py`, но можно вручную указать другие чаты для каждого конкретного конфига в параметре `chats`
+
+**3) Пример добавления своего конфига для парсинга и рассылки из почты**
 
 Для добавления своего конфига, который будет парсить папку писем, нужно в главный конфиг `Config` добавить `SendEmailConfig`, в котором описать:
  - `schedule_kwargs_config` - конфиг `ScheduleKwargsConfig` c расписанием отправки рассылки
@@ -415,12 +414,30 @@ class Config(BaseConfig):
  - `target_email_sender` - имя отправителя письма, которое нужно парсить
  - `mail_folder` - папка писем которую нужно парсить
 
-Для написания своей `parse_func` можно воспользоваться готовыми функциями из класса `EmailParser` модуля `bot/parser`
- 
+Для написания своей `parse_func` можно воспользоваться готовыми функциями из класса `EmailParser` модуля `bot/parser`, в которых реализован базовый функционал работы с почтой
+
+```python
+class Config(BaseConfig):
+    '''Конфиг с конфигами для рассылок'''
+	# ================= ПРИМЕР КОНФИГА ДЛЯ РАССЫЛКИ СООБЩЕНИЙ ИЗ ПОЧТЫ ========
+    my_reminder_config = MyReminderConfig(
+        schedule_kwargs_config=SendEmailConfig(
+            day_of_week='*',  # дни рассылки (mon,tue,wed,thu,fri,sat,sun)
+            hour=12,  # часы рассылки
+            minute=00,  # минуты рассылки
+            end_date='2025-02-01',  # дата окончания рассылки
+            timezone=TIMEZONE,  # часовой пояс
+        ),
+        admin_chat=ADMIN_CHAT,  # чат админа для отправки отчетов об ошибках
+        chats=[CHATS_TO_SEND.MY_CHAT_1, MY_CHAT_2],  # чаты для рассылки
+        
+        # асинхронная функция которая принимает текущий конфиг и возвращает текст рассылки
+        parse_func=EmailParser.parse_func,
+    )
+```
+
 
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
-
-
 
