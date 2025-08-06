@@ -32,6 +32,4 @@ jobs:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           MAIL_ADDRESS: ${{ secrets.MAIL_ADDRESS }}
           MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-          ML_2025_REMINDER_LINK: ${{ vars.ML_2025_REMINDER_LINK }}
-          ML_2025_2_REMINDER_LINK: ${{ vars.ML_2025_2_REMINDER_LINK }}
         run: python run_send.py --email
