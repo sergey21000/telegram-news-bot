@@ -27,7 +27,7 @@ class Config(BaseConfig):
             timezone=TIMEZONE,
         ),
         admin_chat=ADMIN_CHAT,
-        chats=[CHATS_TO_SEND.ML_2025_CHAT],
+        chats=[CHATS_TO_SEND.ML_2025_CHAT, CHATS_TO_SEND.ML_2025_2_CHAT],
         parse_func=EmailParser.get_habr_send,
         mail_folder='INBOX/News',
         target_email_sender='Habr',
@@ -67,3 +67,4 @@ class Config(BaseConfig):
         reminder_time='18:00',
         is_active=True,
     )
+
