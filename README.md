@@ -3,6 +3,8 @@
 ---
 # Email to Telegram News Bot
 
+[![Daily News](https://github.com/sergey21000/telegram-news-bot/actions/workflows/daily_news.yml/badge.svg?branch=main&event=schedule)](https://github.com/sergey21000/telegram-news-bot/actions/workflows/daily_news.yml)
+
 Telegram-бот, который автоматически получает новостные рассылки от Хабр и ~Proglib AI~ через email, обрабатывает их и пересылает в настроенные Telegram-чаты по заданному расписанию
 
 В Google Colab <a href="https://colab.research.google.com/drive/1h4K3khHipUz-ExbK-TD1M0sewa02ggXL"><img src="https://img.shields.io/static/v1?message=Open%20in%20Colab&logo=googlecolab&labelColor=5c5c5c&color=0f80c1&label=%20" alt="Open in Colab"></a> ноутбуке находится код бота с комментариями, процесс получения и парсинга писем из почты, деплой бота на Android и подключение терминала для удобной работы с телефоном, примеры использования библиотек для преобразования HTML в PDF
@@ -446,4 +448,5 @@ class Config(BaseConfig):
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
+
 
