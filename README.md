@@ -1,7 +1,7 @@
 
 
 ---
-# Email to Telegram News Bot
+# 📅 Email to Telegram News Bot
 
 [![Daily News](https://github.com/sergey21000/telegram-news-bot/actions/workflows/daily_news.yml/badge.svg?branch=main&event=schedule)](https://github.com/sergey21000/telegram-news-bot/actions/workflows/daily_news.yml)
 
@@ -448,5 +448,6 @@ class Config(BaseConfig):
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
+
 
 
