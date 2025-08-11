@@ -11,7 +11,7 @@ permissions:
 jobs:
   send-news:
     runs-on: ubuntu-24.04
-    timeout-minutes: 300
+    timeout-minutes: 330
 
     steps:
       - name: Checkout code
