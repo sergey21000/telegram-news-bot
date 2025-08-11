@@ -23,6 +23,7 @@ load_dotenv()
 
 from configs.base import SendReminderConfig, SendEmailConfig
 from configs.chats_settings import SendSettingsConfig
+from bot.validation import EmailNotArrivedYet
 
 if SendSettingsConfig.send_pdf_to_proglib:
     from weasyprint import HTML, CSS
@@ -98,7 +99,7 @@ class EmailParser:
             raise Exception(f'Письмо под номером {message.email_num} от отправителя {email_config.target_email_sender} уже есть в БД')
         current_datetime = datetime.now(email_config.schedule_kwargs_config.timezone)
         if message.email_datetime.date() < current_datetime.date():
-            raise Exception(f'Письмо от отправителя {email_config.target_email_sender} '
+            raise EmailNotArrivedYet(f'Письмо от отправителя {email_config.target_email_sender} '
                             f'раньше сегодняшней даты ({message.email_datetime.date()} < {current_datetime.date()})')
         email_config.email_numbers[message.email_num] = True
         return message

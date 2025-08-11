@@ -31,6 +31,7 @@ class Config(BaseConfig):
         parse_func=EmailParser.get_habr_send,
         mail_folder='INBOX/News',
         target_email_sender='Habr',
+        disable_notification=True,
         is_active=True,
     )
 
@@ -49,6 +50,7 @@ class Config(BaseConfig):
         parse_func=EmailParser.get_reminder_send,
         reminder_link=os.getenv('ML_2025_REMINDER_LINK'),
         reminder_time='19:00',
+        disable_notification=False,
         is_active=True,
     )
 
@@ -65,6 +67,6 @@ class Config(BaseConfig):
         parse_func=EmailParser.get_reminder_send,
         reminder_link=os.getenv('ML_2025_2_REMINDER_LINK'),
         reminder_time='18:00',
+        disable_notification=False,
         is_active=True,
     )
-

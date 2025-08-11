@@ -37,6 +37,7 @@ class SendBaseConfig:
     admin_chat: AdminChatConfig
     chats: list[ChatConfig]
     parse_func: Callable[['SendBaseConfig'], str | tuple[str, str]]
+    disable_notification: bool
     is_active: bool
 
     def __post_init__(self):

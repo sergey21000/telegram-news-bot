@@ -11,6 +11,7 @@ import click
 import bot.setup_logging
 from configs.send_config import Config
 from configs.base import SendBaseConfig
+from bot.message_sender import get_and_send_message
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -29,7 +30,6 @@ def is_current_day_in_schedule(day_of_week: str) -> bool:
     """Проверяет, соответствует ли текущий день расписанию в cron-формате"""
     if day_of_week.strip() == '*':
         return True
-    
     current_weekday = datetime.datetime.now().weekday()
     weekday_map = {0: 'mon', 1: 'tue', 2: 'wed', 3: 'thu', 4: 'fri', 5: 'sat', 6: 'sun'}
     current_day_cron = weekday_map[current_weekday]
@@ -40,7 +40,6 @@ def is_current_day_in_schedule(day_of_week: str) -> bool:
 async def send_from_configs(
         send_configs: list[SendBaseConfig],
         bot: Bot,
-        disable_notification: bool,
         skip_not_current_day: bool,
         ) -> None:
     '''Получение и отправка рассылок из конфигов'''
@@ -51,20 +50,10 @@ async def send_from_configs(
             if not is_current_day_in_schedule(send_config.schedule_kwargs_config.day_of_week):
                 continue
         try:
-            parse_result = await send_config.parse_func(send_config)
+            await get_and_send_message(send_config, bot)
         except Exception as ex:
-            logger.error(f'Ошибка при получении рассылки: {ex}')
+            logger.error(f'Ошибка при получении или отправке рассылки: {ex}')
             continue
-        if isinstance(parse_result, str):
-            for chat in send_config.chats:
-                try:
-                    await bot.send_message(
-                        chat_id=chat.chat_id,
-                        text=parse_result,
-                        disable_notification=disable_notification,
-                    )
-                except Exception as ex:
-                    logger.error(f'Ошибка при отправке рассылки в чат {chat}: {ex}')
 
 
 async def async_main(email: bool, reminder: bool):
@@ -75,7 +64,6 @@ async def async_main(email: bool, reminder: bool):
             await send_from_configs(
                 send_configs=config.get_email_configs(),
                 bot=bot,
-                disable_notification=True,
                 skip_not_current_day=False,
             )
             await asyncio.sleep(5)
@@ -83,7 +71,6 @@ async def async_main(email: bool, reminder: bool):
             await send_from_configs(
                 send_configs=config.get_reminder_configs(),
                 bot=bot,
-                disable_notification=False,
                 skip_not_current_day=True,
                 )
     except Exception as ex:

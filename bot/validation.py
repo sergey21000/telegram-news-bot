@@ -21,6 +21,14 @@ if SendSettingsConfig.send_pdf_to_proglib:
 logger = logging.getLogger(__name__)
 
 
+class EmailNotArrivedYet(Exception):
+    """Исключение для случая, когда письмо еще не пришло сегодня"""
+
+
+class RetryExcept(Exception):
+    '''Исключение когда попытки выполнения корутины закончились'''
+
+
 class ValidationError(Exception):
     '''Общее исключение при валидации'''
     PREFIX = 'Ошибка валидации: '
@@ -50,7 +58,7 @@ class HtmlToPdfValidationError(ValidationError):
 class ImportValidationError(ValidationError):
     '''Исключение при импорте не установленной библиотеки'''
     PREFIX = ValidationError.PREFIX + 'Ошибка импорта: '
-    
+
 
 def validate_env_file() -> None:
     '''Проверка на отсутствие файла .env'''
