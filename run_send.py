@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 import asyncio
 import datetime
@@ -41,6 +42,7 @@ async def send_from_configs(
         send_configs: list[SendBaseConfig],
         bot: Bot,
         skip_not_current_day: bool,
+        sys_exit_if_email_not_arrived: bool = False,
         ) -> None:
     '''Получение и отправка рассылок из конфигов'''
     for send_config in send_configs:
@@ -50,7 +52,15 @@ async def send_from_configs(
             if not is_current_day_in_schedule(send_config.schedule_kwargs_config.day_of_week):
                 continue
         try:
-            await get_and_send_message(send_config, bot)
+            await get_and_send_message(
+                send_config=send_config,
+                bot=bot,
+                with_attempts=False,
+                raise_if_email_not_arrived=sys_exit_if_email_not_arrived,
+            )
+        except EmailNotArrivedYet as ex:
+            logger.error(f'Ошибка отсутствия письма с сегодняшней датой, принудительный выход с кодом 111')
+            sys.exit(111)
         except Exception as ex:
             logger.error(f'Ошибка при получении или отправке рассылки: {ex}')
             continue
@@ -65,6 +75,7 @@ async def async_main(email: bool, reminder: bool):
                 send_configs=config.get_email_configs(),
                 bot=bot,
                 skip_not_current_day=False,
+                sys_exit_if_email_not_arrived=True,
             )
             await asyncio.sleep(5)
         if reminder:
@@ -74,7 +85,7 @@ async def async_main(email: bool, reminder: bool):
                 skip_not_current_day=True,
                 )
     except Exception as ex:
-        logger.error(f'Ошибка при получении и отпраки рассылки: {ex}')
+        logger.error(f'Ошибка при получении и отправки рассылки: {ex}')
     finally:
         await bot.session.close()
         logger.info('Бот завершил работу')
