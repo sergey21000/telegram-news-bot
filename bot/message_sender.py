@@ -27,7 +27,7 @@ def retry_send(max_attempts: int, delay_seconds: int):
                     return result
                 except EmailNotArrivedYet as ex:
                     log = (
-                        f'Ошибка отсутсвия письма с сегодняшней датой\n'
+                        f'Ошибка отсутствия письма с сегодняшней датой\n'
                         f'Код ошибки: {ex}\n'
                         f'Попытка {attempt}/{max_attempts} через {delay_seconds/60} минут'
                     )
@@ -55,22 +55,39 @@ async def get_message_with_attempts(send_config: SendBaseConfig):
     return parse_result
 
 
+async def get_message_without_attempts(send_config: SendBaseConfig):
+    '''Получение рассылки из функции config.parse_func с повторными попытками в случае ошибки'''
+    parse_result = await send_config.parse_func(send_config)
+    return parse_result
+
+
 async def sleep_between_send_messages() -> None:
     '''Пауза между отправками сообщений'''
     sleep_seconds = random.random()
     await asyncio.sleep(sleep_seconds)
 
 
-async def get_and_send_message(send_config: SendBaseConfig, bot: Bot) -> None:
+async def get_and_send_message(
+        send_config: SendBaseConfig,
+        bot: Bot,
+        with_attempts: bool = False,
+        raise_if_email_not_arrived: bool = False,
+    ) -> None:
     '''Получение и отправка рассылки в чаты send_config.chats'''
     parse_result: str | tuple[str, str | None] | None = None
+    get_message_func = get_message_with_attempts if with_attempts else get_message_without_attempts
     try:
-        parse_result = await get_message_with_attempts(send_config)
+        parse_result = await get_message_func(send_config)
     except RetryExcept as ex:
         admin_id = send_config.admin_chat.chat_id
         if SendSettingsConfig.send_errors_to_admin and admin_id is not None:
             await bot.send_message(admin_id, str(ex), parse_mode=None)
         return
+    except EmailNotArrivedYet as ex:
+        log = f'Ошибка отсутствия письма с сегодняшней датой: {ex}'
+        logger.error(log)
+        if raise_if_email_not_arrived:
+            raise ex
     except Exception as ex:
         logger.error(f'Ошибка при получении рассылки: {ex}')
         return
@@ -109,3 +126,6 @@ async def get_and_send_message(send_config: SendBaseConfig, bot: Bot) -> None:
                 await sleep_between_send_messages()
             except Exception as ex:
                 logger.error(f'Ошибка при отправке рассылки в чат {chat}: {ex}')
+    else:
+        log = f'Результат парсинга не является строкой, тип: {type(parse_result)}'
+        logger.error(log)

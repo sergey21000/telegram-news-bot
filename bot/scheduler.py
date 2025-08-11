@@ -13,5 +13,14 @@ async def start_scheduler(scheduler: AsyncIOScheduler, config: Config) -> None:
         if len(send_config.chats) == 0:
             continue
         trigger = CronTrigger(**send_config.schedule_kwargs_config.asdict())
-        scheduler.add_job(get_and_send_message, trigger=trigger, args=[send_config, config.bot])
+        job_kwargs = dict(
+            send_config=send_config,
+            bot=config.bot,
+            with_attempts=True,
+        )
+        scheduler.add_job(
+            get_and_send_message,
+            trigger=trigger,
+            kwargs=job_kwargs,
+            )
     scheduler.start()
