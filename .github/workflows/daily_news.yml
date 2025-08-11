@@ -27,9 +27,12 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run emails
-        env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          MAIL_ADDRESS: ${{ secrets.MAIL_ADDRESS }}
-          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-        run: python run_send.py --email
+      - name: Run emails with retry
+        uses: nick-fields/retry@v3
+        with:
+          timeout_minutes: 5
+          max_attempts: 10
+          retry_wait_seconds: 1800
+          retry_on: error
+          retry_on_exit_code: 111
+          command: python run_send.py --email
