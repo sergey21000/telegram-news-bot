@@ -36,3 +36,7 @@ jobs:
           retry_on: error
           retry_on_exit_code: 111
           command: python run_send.py --email
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          MAIL_ADDRESS: ${{ secrets.MAIL_ADDRESS }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
