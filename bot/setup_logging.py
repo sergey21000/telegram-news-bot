@@ -14,7 +14,7 @@ def setup_logging(log_to_file: bool, level: int) -> None:
         log_file_name = 'bot_log.log'
         handlers.append(logging.FileHandler(log_file_name))
     
-    format = '%(asctime)s - %(filename)s:%(lineno)d - %(levelname)s - %(funcName)s: %(message)s'
+    format = '%(asctime)s - %(levelname)s - %(filename)s:%(lineno)d - %(funcName)s: %(message)s'
     logging.basicConfig(
         level=level,
         format=format,
@@ -24,7 +24,7 @@ def setup_logging(log_to_file: bool, level: int) -> None:
     )
 
 
-# делать ли логгирование в файл
 LOG_TO_FILE = True
 LEVEL = logging.INFO
 setup_logging(log_to_file=LOG_TO_FILE, level=LEVEL)
+
