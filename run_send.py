@@ -4,10 +4,10 @@ import logging
 import asyncio
 import datetime
 
+import click
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-import click
 
 import bot.setup_logging
 from configs.send_config import Config
@@ -39,11 +39,11 @@ def is_current_day_in_schedule(day_of_week: str) -> bool:
 
 
 async def send_from_configs(
-        send_configs: list[SendBaseConfig],
-        bot: Bot,
-        skip_not_current_day: bool,
-        sys_exit_if_email_not_arrived: bool = False,
-        ) -> None:
+    send_configs: list[SendBaseConfig],
+    bot: Bot,
+    skip_not_current_day: bool,
+    sys_exit_if_email_not_arrived: bool = False,
+) -> None:
     '''Получение и отправка рассылок из конфигов'''
     for send_config in send_configs:
         if not send_config.is_active:
@@ -83,7 +83,7 @@ async def async_main(email: bool, reminder: bool):
                 send_configs=config.get_reminder_configs(),
                 bot=bot,
                 skip_not_current_day=True,
-                )
+            )
     except Exception as ex:
         logger.error(f'Ошибка при получении и отправки рассылки: {ex}')
     finally:
