@@ -39,7 +39,7 @@ class Config(BaseConfig):
 
     ml_2025_reminder_config = SendReminderConfig(
         schedule_kwargs_config=ScheduleKwargsConfig(
-            day_of_week='wed,thu',
+            day_of_week='wed,thu',  # (mon,tue,wed,thu,fri,sat,sun)
             hour=10,
             minute=00,
             end_date='2025-12-25',
@@ -50,13 +50,13 @@ class Config(BaseConfig):
         parse_func=EmailParser.get_reminder_send,
         reminder_link=os.getenv('ML_2025_REMINDER_LINK'),
         reminder_time='19:00',
-        disable_notification=False,
+        disable_notification=True,
         is_active=True,
     )
 
     ml_2025_2_1_reminder_config = SendReminderConfig(
         schedule_kwargs_config=ScheduleKwargsConfig(
-            day_of_week='tue',  # (mon,tue,wed,thu,fri,sat,sun)
+            day_of_week='tue',
             hour=10,
             minute=00,
             end_date='2026-04-10',
@@ -67,7 +67,7 @@ class Config(BaseConfig):
         parse_func=EmailParser.get_reminder_send,
         reminder_link=os.getenv('ML_2025_2_REMINDER_LINK'),
         reminder_time='18:00',
-        disable_notification=False,
+        disable_notification=True,
         is_active=True,
     )
 
@@ -84,6 +84,6 @@ class Config(BaseConfig):
         parse_func=EmailParser.get_reminder_send,
         reminder_link=os.getenv('ML_2025_2_REMINDER_LINK'),
         reminder_time='17:00',
-        disable_notification=False,
+        disable_notification=True,
         is_active=True,
     )
