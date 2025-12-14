@@ -37,22 +37,22 @@ class Config(BaseConfig):
 
     # ================= КОНФИГИ НАПОМИНАНИЙ ========================
 
-    ml_2025_reminder_config = SendReminderConfig(
-        schedule_kwargs_config=ScheduleKwargsConfig(
-            day_of_week='wed,thu',  # (mon,tue,wed,thu,fri,sat,sun)
-            hour=10,
-            minute=00,
-            end_date='2025-12-25',
-            timezone=TIMEZONE,
-        ),
-        admin_chat=ADMIN_CHAT,
-        chats=[CHATS_TO_SEND.ML_2025_CHAT],
-        parse_func=EmailParser.get_reminder_send,
-        reminder_link=os.getenv('ML_2025_REMINDER_LINK'),
-        reminder_time='19:00',
-        disable_notification=True,
-        is_active=True,
-    )
+    # ml_2025_reminder_config = SendReminderConfig(
+        # schedule_kwargs_config=ScheduleKwargsConfig(
+            # day_of_week='wed,thu',  # (mon,tue,wed,thu,fri,sat,sun)
+            # hour=10,
+            # minute=00,
+            # end_date='2025-12-25',
+            # timezone=TIMEZONE,
+        # ),
+        # admin_chat=ADMIN_CHAT,
+        # chats=[CHATS_TO_SEND.ML_2025_CHAT],
+        # parse_func=EmailParser.get_reminder_send,
+        # reminder_link=os.getenv('ML_2025_REMINDER_LINK'),
+        # reminder_time='19:00',
+        # disable_notification=True,
+        # is_active=True,
+    # )
 
     ml_2025_2_1_reminder_config = SendReminderConfig(
         schedule_kwargs_config=ScheduleKwargsConfig(
