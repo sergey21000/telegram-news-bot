@@ -83,7 +83,7 @@ class Config(BaseConfig):
         chats=[CHATS_TO_SEND.ML_2025_2_CHAT],
         parse_func=EmailParser.get_reminder_send,
         reminder_link=os.getenv('ML_2025_2_REMINDER_LINK'),
-        reminder_time='17:00',
+        reminder_time='18:00',
         disable_notification=True,
         is_active=True,
     )
