@@ -117,7 +117,7 @@ async def get_and_send_message(
     if isinstance(parse_result, str):
         message_to_send = parse_result
         for chat in send_config.chats:
-            logger.debug(message_to_send)
+            print(f'DEBUG | message_to_send: {message_to_send}')
             try:
                 await bot.send_message(
                     chat_id=chat.chat_id,
@@ -129,6 +129,4 @@ async def get_and_send_message(
                 logger.error(f'Ошибка при отправке рассылки в чат {chat}: {ex}')
     else:
         log = f'Результат парсинга не является строкой, тип: {type(parse_result)}'
-
         logger.error(log)
-
