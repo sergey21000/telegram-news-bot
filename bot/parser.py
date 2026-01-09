@@ -165,8 +165,14 @@ class EmailParser:
         message_to_remove = '\r\nБыть в курсе событий\r\n---'
         if message_to_remove in emails_list:
             emails_list.remove(message_to_remove)
+        clean_emails_list = []
+        sep_message = 'Курсы, которые могут вам подойти'
+        for email in emails_list:
+            if sep_message in email:
+                break
+            clean_emails_list.append(email)
         message_to_send = f'<u><b>📨 Ежедневная рассылка статей от Хабр {message.email_datetime.date()}</b></u>\n\n'
-        for email_msg in emails_list:
+        for email_msg in clean_emails_list:
             if 'https://' in email_msg:
                 email_title, email_link = email_msg.split('https://')
                 email_title = email_title.strip()
@@ -263,3 +269,4 @@ class UrlToPdf:
             logger.error(msg, exc_info=True)
             return None
         return pdf_file_name
+
