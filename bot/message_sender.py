@@ -100,6 +100,7 @@ async def get_and_send_message(
             pdf_file = FSInputFile(pdf_file_name)
             for chat in send_config.chats:
                 try:
+                    logger.debug(message_to_send)
                     await bot.send_document(
                         chat_id=chat.chat_id,
                         document=pdf_file,
@@ -128,4 +129,5 @@ async def get_and_send_message(
                 logger.error(f'Ошибка при отправке рассылки в чат {chat}: {ex}')
     else:
         log = f'Результат парсинга не является строкой, тип: {type(parse_result)}'
+
         logger.error(log)
