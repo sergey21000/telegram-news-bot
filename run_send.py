@@ -13,6 +13,7 @@ import bot.setup_logging
 from configs.send_config import Config
 from configs.base import SendBaseConfig
 from bot.message_sender import get_and_send_message
+from bot.validation import EmailNotArrivedYet
 
 from dotenv import load_dotenv
 load_dotenv()
