@@ -20,11 +20,10 @@ def setup_logging(log_to_file: bool, level: int) -> None:
         format=format,
         datefmt='%Y-%m-%d %H:%M:%S',
         handlers=handlers,
-        force=True,
+        force=False,
     )
 
 
-LOG_TO_FILE = True
+LOG_TO_FILE = False
 LEVEL = logging.INFO
 setup_logging(log_to_file=LOG_TO_FILE, level=LEVEL)
-
