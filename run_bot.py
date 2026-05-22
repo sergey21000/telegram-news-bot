@@ -20,6 +20,7 @@ from bot.handlers import router
 from dotenv import load_dotenv
 load_dotenv()
 
+
 logger = logging.getLogger(__name__)
 bot = Bot(
     token=os.getenv('BOT_TOKEN'),
