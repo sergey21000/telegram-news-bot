@@ -8,8 +8,8 @@ on:
 permissions:
   contents: read
 
-env:
-  UV_SYSTEM_PYTHON: 1
+# env:
+  # UV_SYSTEM_PYTHON: 1
 
 jobs:
   send-news:
@@ -27,7 +27,9 @@ jobs:
           python-version: 3.12
 
       - name: Install dependencies
-        run: uv pip install -r requirements.txt
+        run: |
+          uv venv
+          uv pip install -r requirements.txt
 
       - name: Run emails with retry
         uses: nick-fields/retry@v3
