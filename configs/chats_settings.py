@@ -24,6 +24,7 @@ ADMIN_CHAT: AdminChatConfig = AdminChatConfig(chat_id=1025909168)
 CHATS_TO_SEND: dict[str, ChatConfig] = dict(
     ML_2025_CHAT=ChatConfig(chat_id=-1002633135386),
     ML_2025_2_CHAT=ChatConfig(chat_id=-1002740121366),
+    ARCHITECT_CHAT=ChatConfig(chat_id=-1003808972964),
 )
 
 

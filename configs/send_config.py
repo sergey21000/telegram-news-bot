@@ -27,7 +27,7 @@ class Config(BaseConfig):
             timezone=TIMEZONE,
         ),
         admin_chat=ADMIN_CHAT,
-        chats=[CHATS_TO_SEND.ML_2025_CHAT, CHATS_TO_SEND.ML_2025_2_CHAT],
+        chats=[CHATS_TO_SEND.ML_2025_CHAT, CHATS_TO_SEND.ML_2025_2_CHAT, CHATS_TO_SEND.ARCHITECT_CHAT],
         parse_func=EmailParser.get_habr_send,
         mail_folder='INBOX/News',
         target_email_sender='Habr',
@@ -54,36 +54,19 @@ class Config(BaseConfig):
         # is_active=True,
     # )
 
-    ml_2025_2_1_reminder_config = SendReminderConfig(
+    architect_reminder_config = SendReminderConfig(
         schedule_kwargs_config=ScheduleKwargsConfig(
-            day_of_week='tue',
+            day_of_week='tue,fri',
             hour=10,
             minute=00,
-            end_date='2026-04-10',
+            end_date='2026-08-20',
             timezone=TIMEZONE,
         ),
         admin_chat=ADMIN_CHAT,
         chats=[CHATS_TO_SEND.ML_2025_2_CHAT],
         parse_func=EmailParser.get_reminder_send,
-        reminder_link=os.getenv('ML_2025_2_REMINDER_LINK'),
-        reminder_time='18:00',
-        disable_notification=True,
-        is_active=True,
-    )
-
-    ml_2025_2_2_reminder_config = SendReminderConfig(
-        schedule_kwargs_config=ScheduleKwargsConfig(
-            day_of_week='fri',
-            hour=10,
-            minute=00,
-            end_date='2026-04-10',
-            timezone=TIMEZONE,
-        ),
-        admin_chat=ADMIN_CHAT,
-        chats=[CHATS_TO_SEND.ML_2025_2_CHAT],
-        parse_func=EmailParser.get_reminder_send,
-        reminder_link=os.getenv('ML_2025_2_REMINDER_LINK'),
-        reminder_time='18:00',
+        reminder_link=os.getenv('ARCHITECT_REMINDER_LINK'),
+        reminder_time='19:00',
         disable_notification=True,
         is_active=True,
     )
