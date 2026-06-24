@@ -63,7 +63,7 @@ class Config(BaseConfig):
             timezone=TIMEZONE,
         ),
         admin_chat=ADMIN_CHAT,
-        chats=[CHATS_TO_SEND.ML_2025_2_CHAT],
+        chats=[CHATS_TO_SEND.ARCHITECT_CHAT],
         parse_func=EmailParser.get_reminder_send,
         reminder_link=os.getenv('ARCHITECT_REMINDER_LINK'),
         reminder_time='19:00',
