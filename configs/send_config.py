@@ -56,7 +56,7 @@ class Config(BaseConfig):
 
     architect_reminder_config = SendReminderConfig(
         schedule_kwargs_config=ScheduleKwargsConfig(
-            day_of_week='tue,fri',
+            day_of_week='tue,thu',
             hour=10,
             minute=00,
             end_date='2026-08-20',
