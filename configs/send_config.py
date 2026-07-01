@@ -68,5 +68,5 @@ class Config(BaseConfig):
         reminder_link=os.getenv('ARCHITECT_REMINDER_LINK'),
         reminder_time='19:00',
         disable_notification=True,
-        is_active=True,
+        is_active=False,
     )
