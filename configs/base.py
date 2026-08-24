@@ -79,3 +79,4 @@ class BaseConfig:
     @classmethod
     def get_all_configs(cls) -> list[SendBaseConfig]:
         return cls.get_email_configs() + cls.get_reminder_configs()
+
