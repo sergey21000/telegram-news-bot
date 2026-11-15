@@ -98,9 +98,9 @@ class EmailParser:
         if message.email_num in email_config.email_numbers:
             raise Exception(f'Письмо под номером {message.email_num} от отправителя {email_config.target_email_sender} уже есть в БД')
         current_datetime = datetime.now(email_config.schedule_kwargs_config.timezone)
-        # if message.email_datetime.date() < current_datetime.date():
-        #     raise EmailNotArrivedYet(f'Письмо от отправителя {email_config.target_email_sender} '
-        #                     f'раньше сегодняшней даты ({message.email_datetime.date()} < {current_datetime.date()})')
+        if message.email_datetime.date() < current_datetime.date():
+            raise EmailNotArrivedYet(f'Письмо от отправителя {email_config.target_email_sender} '
+                            f'раньше сегодняшней даты ({message.email_datetime.date()} < {current_datetime.date()})')
         email_config.email_numbers[message.email_num] = True
         return message
 
