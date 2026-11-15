@@ -28,7 +28,6 @@ bot = Bot(
     default=DefaultBotProperties(parse_mode=ParseMode.HTML),
 )
 dp = Dispatcher()
-
 router.message.middleware(BotMiddleware(bot))
 dp.include_router(router)
 
