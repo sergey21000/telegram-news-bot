@@ -75,7 +75,7 @@ async def async_main(email: bool, reminder: bool):
             await send_from_configs(
                 send_configs=config.get_email_configs(),
                 bot=bot,
-                skip_not_current_day=True,
+                skip_not_current_day=False,
                 sys_exit_if_email_not_arrived=True,
             )
             await asyncio.sleep(5)
